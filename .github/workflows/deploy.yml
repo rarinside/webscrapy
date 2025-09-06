@@ -38,10 +38,78 @@ jobs:
       
     - name: Build application
       run: |
-        # Create a minimal build for bookmarklet
+        # Create a minimal but functional build for bookmarklet
         mkdir -p dist
-        echo 'console.log("Web Data Extractor loaded successfully!");' > dist/web-data-extractor.min.js
-        echo '/* Web Data Extractor Styles */' > dist/web-data-extractor.min.css
+        cat > dist/web-data-extractor.min.js << 'EOF'
+        (function() {
+          'use strict';
+          
+          console.log('Web Data Extractor loaded successfully!');
+          
+          // Simple contact extractor placeholder
+          window.WebDataExtractor = {
+            init: function() {
+              console.log('WebDataExtractor initialized');
+              this.showNotification('Web Data Extractor ativado! (Versão de desenvolvimento)', 'success');
+            },
+            
+            showNotification: function(message, type) {
+              const notification = document.createElement('div');
+              notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#4CAF50' : '#f44336'};
+                color: white;
+                padding: 15px 20px;
+                border-radius: 5px;
+                z-index: 999999;
+                font-family: Arial, sans-serif;
+                font-size: 14px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+              `;
+              notification.textContent = message;
+              document.body.appendChild(notification);
+              
+              setTimeout(() => {
+                if (notification.parentNode) {
+                  notification.parentNode.removeChild(notification);
+                }
+              }, 5000);
+            },
+            
+            getState: function() {
+              return { isInitialized: true, isActive: false };
+            }
+          };
+          
+          // Auto-initialize
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+              window.WebDataExtractor.init();
+            });
+          } else {
+            window.WebDataExtractor.init();
+          }
+        })();
+        EOF
+        
+        cat > dist/web-data-extractor.min.css << 'EOF'
+        /* Web Data Extractor Styles - Development Version */
+        .web-data-extractor-notification {
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          background: #4CAF50;
+          color: white;
+          padding: 15px 20px;
+          border-radius: 5px;
+          z-index: 999999;
+          font-family: Arial, sans-serif;
+          font-size: 14px;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        EOF
       
     - name: Generate bookmarklet
       run: |
