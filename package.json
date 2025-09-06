@@ -1,0 +1,44 @@
+{
+  "name": "web-data-extractor",
+  "version": "1.0.0",
+  "description": "Browser-based contact data extraction tool for Pipedrive",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "webpack --mode production",
+    "build:dev": "webpack --mode development",
+    "build:bookmarklet": "node scripts/build-bookmarklet.js",
+    "build:all": "npm run build && npm run build:bookmarklet",
+    "build:github-pages": "npm run build && node scripts/build-bookmarklet.js --github-pages",
+    "dev": "node scripts/dev-server.js",
+    "dev:port": "node scripts/dev-server.js --port",
+    "watch": "webpack --mode development --watch",
+    "test": "vitest --run",
+    "test:watch": "vitest",
+    "clean": "rimraf dist docs",
+    "lint": "eslint src --ext .ts",
+    "type-check": "tsc --noEmit"
+  },
+  "keywords": [
+    "contact-extraction",
+    "bookmarklet",
+    "pipedrive",
+    "data-extraction"
+  ],
+  "author": "Web Data Extractor Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "css-loader": "^6.8.1",
+    "eslint": "^8.0.0",
+    "jsdom": "^26.1.0",
+    "mini-css-extract-plugin": "^2.7.6",
+    "rimraf": "^5.0.0",
+    "ts-loader": "^9.4.4",
+    "typescript": "^5.0.0",
+    "vitest": "^0.34.0",
+    "webpack": "^5.88.0",
+    "webpack-cli": "^5.1.4"
+  }
+}

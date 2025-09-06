@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contatos Dinâmicos - Teste</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .contact { margin: 15px 0; padding: 10px; border: 1px solid #ddd; }
+        .loading { color: #666; font-style: italic; }
+        .highlight { background-color: yellow; }
+        button { margin: 10px 5px; padding: 10px 15px; }
+    </style>
+</head>
+<body>
+    <h1>Contatos com Carregamento Dinâmico - Teste</h1>
+    
+    <div>
+        <button onclick="loadMoreContacts()">Carregar Mais Contatos</button>
+        <button onclick="loadAsyncContacts()">Carregar Contatos Assíncronos</button>
+        <button onclick="clearContacts()">Limpar Contatos</button>
+    </div>
+
+    <!-- Initial contacts -->
+    <div id="contacts-container">
+        <div class="contact">
+            <h3>Contato Inicial 1</h3>
+            <p>Nome: Rafael Santos</p>
+            <p>Telefone: (11) 99999-0001</p>
+            <p>Email: rafael@inicial.com.br</p>
+        </div>
+
+        <div class="contact">
+            <h3>Contato Inicial 2</h3>
+            <p>Nome: Larissa Costa</p>
+            <p>Telefone: (21) 98888-0002</p>
+            <p>Email: larissa@inicial.com.br</p>
+        </div>
+    </div>
+
+    <div id="loading-indicator" class="loading" style="display: none;">
+        Carregando mais contatos...
+    </div>
+
+    <script>
+        let contactCounter = 3;
+        const brazilianNames = [
+            'Carlos Eduardo', 'Ana Paula', 'José da Silva', 'Maria das Graças',
+            'João dos Santos', 'Fernanda Oliveira', 'Ricardo Pereira', 'Juliana Costa',
+            'Marcos Antonio', 'Patricia Santos', 'Eduardo Silva', 'Camila Rodrigues',
+            'Gabriel Mendes', 'Beatriz Lima', 'Leonardo Ferreira', 'Mariana Oliveira'
+        ];
+        
+        const areaCodes = ['11', '21', '31', '41', '51', '61', '71', '81', '85', '91'];
+        const domains = ['empresa.com.br', 'gmail.com', 'hotmail.com', 'yahoo.com.br', 'outlook.com'];
+
+        function getRandomName() {
+            return brazilianNames[Math.floor(Math.random() * brazilianNames.length)];
+        }
+
+        function getRandomPhone() {
+            const areaCode = areaCodes[Math.floor(Math.random() * areaCodes.length)];
+            const number = Math.floor(Math.random() * 90000) + 10000;
+            const suffix = Math.floor(Math.random() * 9000) + 1000;
+            return `(${areaCode}) 9${number}-${suffix}`;
+        }
+
+        function getRandomEmail(name) {
+            const domain = domains[Math.floor(Math.random() * domains.length)];
+            const cleanName = name.toLowerCase()
+                .replace(/\s+/g, '.')
+                .replace(/[áàâã]/g, 'a')
+                .replace(/[éê]/g, 'e')
+                .replace(/[í]/g, 'i')
+                .replace(/[óôõ]/g, 'o')
+                .replace(/[ú]/g, 'u')
+                .replace(/[ç]/g, 'c')
+                .replace(/[^a-z.]/g, '');
+            return `${cleanName}@${domain}`;
+        }
+
+        function createContactElement(name, phone, email, id) {
+            return `
+                <div class="contact" id="contact-${id}">
+                    <h3>Contato Dinâmico ${id}</h3>
+                    <p>Nome: ${name}</p>
+                    <p>Telefone: ${phone}</p>
+                    <p>Email: ${email}</p>
+                </div>
+            `;
+        }
+
+        function loadMoreContacts() {
+            const container = document.getElementById('contacts-container');
+            const loadingIndicator = document.getElementById('loading-indicator');
+            
+            loadingIndicator.style.display = 'block';
+            
+            // Simulate loading delay
+            setTimeout(() => {
+                for (let i = 0; i < 5; i++) {
+                    const name = getRandomName();
+                    const phone = getRandomPhone();
+                    const email = getRandomEmail(name);
+                    
+                    container.innerHTML += createContactElement(name, phone, email, contactCounter);
+                    contactCounter++;
+                }
+                
+                loadingIndicator.style.display = 'none';
+            }, 1000);
+        }
+
+        function loadAsyncContacts() {
+            const container = document.getElementById('contacts-container');
+            const loadingIndicator = document.getElementById('loading-indicator');
+            
+            loadingIndicator.style.display = 'block';
+            
+            // Simulate async loading with Promise
+            new Promise((resolve) => {
+                setTimeout(() => {
+                    const contacts = [];
+                    for (let i = 0; i < 3; i++) {
+                        const name = getRandomName();
+                        const phone = getRandomPhone();
+                        const email = getRandomEmail(name);
+                        contacts.push({ name, phone, email, id: contactCounter++ });
+                    }
+                    resolve(contacts);
+                }, 1500);
+            }).then(contacts => {
+                contacts.forEach(contact => {
+                    container.innerHTML += createContactElement(
+                        contact.name, 
+                        contact.phone, 
+                        contact.email, 
+                        contact.id
+                    );
+                });
+                loadingIndicator.style.display = 'none';
+            });
+        }
+
+        function clearContacts() {
+            const container = document.getElementById('contacts-container');
+            container.innerHTML = '';
+            contactCounter = 1;
+        }
+
+        // Auto-load some contacts after page load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                loadMoreContacts();
+            }, 2000);
+        });
+
+        // Simulate periodic updates
+        setInterval(() => {
+            if (Math.random() > 0.7) { // 30% chance every 5 seconds
+                const container = document.getElementById('contacts-container');
+                const name = getRandomName();
+                const phone = getRandomPhone();
+                const email = getRandomEmail(name);
+                
+                const newContact = document.createElement('div');
+                newContact.innerHTML = createContactElement(name, phone, email, contactCounter);
+                container.appendChild(newContact.firstElementChild);
+                contactCounter++;
+            }
+        }, 5000);
+    </script>
+</body>
+</html>

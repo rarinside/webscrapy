@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Layout Complexo - Teste</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
+        .header { background: #333; color: white; padding: 20px; margin-bottom: 20px; }
+        .sidebar { float: left; width: 25%; background: #f4f4f4; padding: 15px; margin-right: 20px; }
+        .main-content { float: left; width: 70%; }
+        .card { border: 1px solid #ddd; margin: 15px 0; padding: 15px; border-radius: 5px; }
+        .footer { clear: both; background: #333; color: white; padding: 20px; margin-top: 30px; }
+        .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+                 background: white; border: 2px solid #333; padding: 20px; z-index: 1000; }
+        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+                   background: rgba(0,0,0,0.5); z-index: 999; }
+        .highlight { background-color: yellow; }
+        button { margin: 5px; padding: 8px 12px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Sistema de Gestão de Contatos</h1>
+        <p>Empresa XYZ - Departamento de Relacionamento</p>
+        <p>Contato Principal: (11) 3333-0000 - contato@empresa.com.br</p>
+    </div>
+
+    <div class="sidebar">
+        <h3>Menu de Navegação</h3>
+        <ul>
+            <li>Contatos Internos</li>
+            <li>Contatos Externos</li>
+            <li>Fornecedores</li>
+            <li>Clientes</li>
+        </ul>
+
+        <h3>Contatos de Emergência</h3>
+        <div class="card">
+            <strong>Segurança</strong><br>
+            João da Segurança<br>
+            (11) 99999-0911<br>
+            seguranca@empresa.com.br
+        </div>
+
+        <div class="card">
+            <strong>TI - Suporte</strong><br>
+            Maria do TI<br>
+            (11) 98888-0123<br>
+            ti.suporte@empresa.com.br
+        </div>
+    </div>
+
+    <div class="main-content">
+        <h2>Diretório de Contatos</h2>
+        
+        <!-- Nested tables -->
+        <div class="card">
+            <h3>Estrutura Organizacional</h3>
+            <table border="1" style="width: 100%; border-collapse: collapse;">
+                <tr>
+                    <th>Departamento</th>
+                    <th>Detalhes</th>
+                </tr>
+                <tr>
+                    <td>Diretoria</td>
+                    <td>
+                        <table border="1" style="width: 100%;">
+                            <tr>
+                                <td>CEO: Roberto Silva</td>
+                                <td>(11) 99999-1001</td>
+                                <td>ceo@empresa.com.br</td>
+                            </tr>
+                            <tr>
+                                <td>CFO: Patricia Santos</td>
+                                <td>(11) 99999-1002</td>
+                                <td>cfo@empresa.com.br</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Gerência</td>
+                    <td>
+                        <table border="1" style="width: 100%;">
+                            <tr>
+                                <td>Gerente de Vendas: Carlos Mendes</td>
+                                <td>(11) 98888-2001</td>
+                                <td>vendas@empresa.com.br</td>
+                            </tr>
+                            <tr>
+                                <td>Gerente de Marketing: Ana Costa</td>
+                                <td>(11) 98888-2002</td>
+                                <td>marketing@empresa.com.br</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Grid layout -->
+        <div class="card">
+            <h3>Equipe de Desenvolvimento</h3>
+            <div class="contact-grid">
+                <div style="border: 1px solid #ccc; padding: 10px;">
+                    <h4>Frontend</h4>
+                    <p>Líder: Thiago Oliveira</p>
+                    <p>Tel: (11) 97777-3001</p>
+                    <p>Email: thiago@dev.empresa.com.br</p>
+                </div>
+                <div style="border: 1px solid #ccc; padding: 10px;">
+                    <h4>Backend</h4>
+                    <p>Líder: Fernanda Lima</p>
+                    <p>Tel: (11) 97777-3002</p>
+                    <p>Email: fernanda@dev.empresa.com.br</p>
+                </div>
+                <div style="border: 1px solid #ccc; padding: 10px;">
+                    <h4>DevOps</h4>
+                    <p>Líder: Marcos Santos</p>
+                    <p>Tel: (11) 97777-3003</p>
+                    <p>Email: marcos@devops.empresa.com.br</p>
+                </div>
+                <div style="border: 1px solid #ccc; padding: 10px;">
+                    <h4>QA</h4>
+                    <p>Líder: Juliana Costa</p>
+                    <p>Tel: (11) 97777-3004</p>
+                    <p>Email: juliana@qa.empresa.com.br</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mixed content with forms -->
+        <div class="card">
+            <h3>Formulário de Contato</h3>
+            <form>
+                <p>Para entrar em contato com nossa equipe:</p>
+                <label>Nome: <input type="text" placeholder="Seu nome completo"></label><br><br>
+                <label>Telefone: <input type="tel" placeholder="(11) 99999-9999"></label><br><br>
+                <label>Email: <input type="email" placeholder="seu@email.com"></label><br><br>
+                
+                <p>Ou entre em contato diretamente:</p>
+                <ul>
+                    <li>Atendimento: Sandra Pereira - (11) 96666-4001 - atendimento@empresa.com.br</li>
+                    <li>Comercial: Ricardo Ferreira - (11) 96666-4002 - comercial@empresa.com.br</li>
+                    <li>Suporte: Camila Rodrigues - (11) 96666-4003 - suporte@empresa.com.br</li>
+                </ul>
+            </form>
+        </div>
+
+        <!-- Content with scripts and styles (should be ignored) -->
+        <div class="card">
+            <h3>Informações Técnicas</h3>
+            <script>
+                // This should be ignored by the extractor
+                var technicalContact = {
+                    name: "Script Contact",
+                    phone: "(11) 99999-9999",
+                    email: "script@test.com"
+                };
+            </script>
+            <style>
+                /* This should also be ignored */
+                .technical-contact {
+                    name: "CSS Contact";
+                    phone: "(11) 88888-8888";
+                    email: "css@test.com";
+                }
+            </style>
+            
+            <p>Contato real do departamento técnico:</p>
+            <p>Coordenador: Bruno Oliveira</p>
+            <p>Telefone: (11) 95555-5001</p>
+            <p>Email: bruno@tecnico.empresa.com.br</p>
+        </div>
+
+        <button onclick="showModal()">Mostrar Contatos Adicionais</button>
+    </div>
+
+    <!-- Modal with additional contacts -->
+    <div class="overlay" id="overlay" onclick="hideModal()"></div>
+    <div class="modal" id="contactModal">
+        <h3>Contatos Adicionais</h3>
+        <div>
+            <h4>Parceiros Estratégicos</h4>
+            <ul>
+                <li>Parceiro A: Diego Silva - (21) 99999-5001 - diego@parceiroa.com.br</li>
+                <li>Parceiro B: Vanessa Costa - (31) 98888-5002 - vanessa@parceirob.com.br</li>
+                <li>Parceiro C: Leonardo Santos - (41) 97777-5003 - leonardo@parceiroc.com.br</li>
+            </ul>
+        </div>
+        <button onclick="hideModal()">Fechar</button>
+    </div>
+
+    <div class="footer">
+        <h3>Informações da Empresa</h3>
+        <p>Empresa XYZ Ltda.</p>
+        <p>Endereço: Rua das Empresas, 123 - São Paulo/SP</p>
+        <p>Telefone Principal: (11) 3333-1000</p>
+        <p>Email Corporativo: contato@empresa.com.br</p>
+        <p>Responsável Legal: Dr. José da Silva Advogados - (11) 94444-6001 - juridico@empresa.com.br</p>
+    </div>
+
+    <script>
+        function showModal() {
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('contactModal').style.display = 'block';
+        }
+
+        function hideModal() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('contactModal').style.display = 'none';
+        }
+
+        // Simulate dynamic content loading
+        setTimeout(() => {
+            const dynamicContent = document.createElement('div');
+            dynamicContent.className = 'card';
+            dynamicContent.innerHTML = `
+                <h3>Contatos Carregados Dinamicamente</h3>
+                <p>Consultor Externo: Amanda Ferreira</p>
+                <p>Telefone: (51) 93333-7001</p>
+                <p>Email: amanda@consultoria.com.br</p>
+            `;
+            document.querySelector('.main-content').appendChild(dynamicContent);
+        }, 3000);
+    </script>
+</body>
+</html>

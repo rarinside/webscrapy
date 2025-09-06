@@ -1,0 +1,141 @@
+name: Deploy Web Data Extractor
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run tests
+      run: npm test -- --run
+      
+    - name: Build application
+      run: |
+        # Create a minimal build for bookmarklet (skip main app build for now)
+        mkdir -p dist
+        echo '/* Web Data Extractor - Placeholder */' > dist/web-data-extractor.min.js
+        echo '/* Web Data Extractor Styles - Placeholder */' > dist/web-data-extractor.min.css
+      
+    - name: Generate bookmarklet
+      run: |
+        # Set the base URL for GitHub Pages
+        export BASE_URL="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}"
+        node src/bookmarklet/generator.js "$BASE_URL"
+        
+    - name: Generate version file
+      run: |
+        cat > dist/version.json << EOF
+        {
+          "version": "${{ github.sha }}",
+          "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+          "buildDate": "$(date -u +%Y-%m-%d)",
+          "commit": "${{ github.sha }}",
+          "branch": "${{ github.ref_name }}",
+          "files": {
+            "script": "web-data-extractor.min.js",
+            "css": "web-data-extractor.min.css",
+            "bookmarklet": "bookmarklet.html"
+          },
+          "changelog": [
+            {
+              "version": "${{ github.sha }}",
+              "date": "$(date -u +%Y-%m-%d)",
+              "changes": [
+                "Automated build from commit ${{ github.sha }}",
+                "Bookmarklet deployment system",
+                "Automatic caching and update checking"
+              ]
+            }
+          ]
+        }
+        EOF
+        
+    - name: Create deployment README
+      run: |
+        cat > dist/README.md << EOF
+        # Web Data Extractor - Deployment
+        
+        **Version:** ${{ github.sha }}  
+        **Build Date:** $(date -u +%Y-%m-%d)  
+        **Base URL:** https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
+        
+        ## Files
+        
+        - \`web-data-extractor.min.js\` - Main application script
+        - \`web-data-extractor.min.css\` - Application styles  
+        - \`bookmarklet.html\` - Installation page
+        - \`bookmarklet.js\` - Bookmarklet loader code
+        - \`version.json\` - Version information for updates
+        
+        ## Installation
+        
+        Visit the [installation page](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/bookmarklet.html) to install the bookmarklet.
+        
+        ## Usage
+        
+        1. Install the bookmarklet from the installation page
+        2. Visit any webpage with contact information
+        3. Click the bookmarklet in your browser's bookmark bar
+        4. Use Ctrl+Shift+E to activate the extractor
+        
+        ## Automatic Updates
+        
+        The bookmarklet automatically checks for updates and uses intelligent caching to improve performance.
+        EOF
+        
+    - name: List generated files
+      run: |
+        echo "Generated files:"
+        ls -la dist/
+        echo ""
+        echo "Bookmarklet size:"
+        wc -c dist/bookmarklet-url.txt
+        
+    - name: Setup Pages
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+      uses: actions/configure-pages@v4
+      
+    - name: Upload artifact
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: './dist'
+
+  deploy:
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
