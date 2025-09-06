@@ -49,6 +49,93 @@ jobs:
         export BASE_URL="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}"
         node src/bookmarklet/generator.js "$BASE_URL"
         
+    - name: Create index.html redirect
+      run: |
+        cat > dist/index.html << EOF
+        <!DOCTYPE html>
+        <html lang="pt-BR">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Web Data Extractor - Extrator de Contatos</title>
+            <meta http-equiv="refresh" content="0; url=./bookmarklet.html">
+            <style>
+                body { 
+                    font-family: Arial, sans-serif; 
+                    text-align: center; 
+                    padding: 50px; 
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    color: white;
+                    min-height: 100vh;
+                    margin: 0;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    flex-direction: column;
+                }
+                .container {
+                    background: rgba(255,255,255,0.1);
+                    padding: 40px;
+                    border-radius: 15px;
+                    backdrop-filter: blur(10px);
+                    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+                }
+                h1 { margin-bottom: 20px; font-size: 2.5em; }
+                p { font-size: 1.2em; margin-bottom: 30px; }
+                .btn {
+                    display: inline-block;
+                    padding: 15px 30px;
+                    background: #4CAF50;
+                    color: white;
+                    text-decoration: none;
+                    border-radius: 25px;
+                    font-size: 1.1em;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+                }
+                .btn:hover {
+                    background: #45a049;
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+                }
+                .features {
+                    text-align: left;
+                    margin: 30px 0;
+                    display: inline-block;
+                }
+                .features li {
+                    margin: 10px 0;
+                    font-size: 1.1em;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h1>📞 Web Data Extractor</h1>
+                <p>Extrator de contatos para páginas web brasileiras</p>
+                
+                <ul class="features">
+                    <li>✅ Extrai telefones, emails e nomes automaticamente</li>
+                    <li>✅ Suporte completo para formatos brasileiros</li>
+                    <li>✅ Interface para revisar e editar contatos</li>
+                    <li>✅ Exportação direta para CSV</li>
+                    <li>✅ Funciona em qualquer site</li>
+                </ul>
+                
+                <p>Redirecionando para a página de instalação...</p>
+                <a href="./bookmarklet.html" class="btn">Instalar Bookmarklet</a>
+            </div>
+            
+            <script>
+                // Redirect after 3 seconds if meta refresh doesn't work
+                setTimeout(function() {
+                    window.location.href = './bookmarklet.html';
+                }, 3000);
+            </script>
+        </body>
+        </html>
+        EOF
+        
     - name: Generate version file
       run: |
         cat > dist/version.json << EOF
