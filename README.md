@@ -16,12 +16,12 @@ Um bookmarklet poderoso para extrair informações de contato de páginas web br
 ## 🚀 Instalação
 
 ### Opção 1: Instalação Rápida
-1. Visite a [página de instalação](https://rarinside.github.io/webscrapyfavor/bookmarklet.html)
+1. Visite a [página de instalação](https://rarinside.github.io/webscrapy/bookmarklet.html)
 2. Arraste o botão do bookmarklet para sua barra de favoritos
 3. Pronto! Agora você pode usar em qualquer site
 
 ### Opção 2: Instalação Manual
-1. Copie o código do bookmarklet da [página de instalação](https://rarinside.github.io/webscrapyfavor/bookmarklet.html)
+1. Copie o código do bookmarklet da [página de instalação](https://rarinside.github.io/webscrapy/bookmarklet.html)
 2. Crie um novo favorito no seu navegador
 3. Cole o código como URL do favorito
 4. Nomeie como "Web Data Extractor"
@@ -81,8 +81,8 @@ Um bookmarklet poderoso para extrair informações de contato de páginas web br
 
 ### Instalação Local
 ```bash
-git clone https://github.com/rarinside/webscrapyfavor.git
-cd webscrapyfavor
+git clone https://github.com/rarinside/webscrapy.git
+cd webscrapy
 npm install
 ```
 
@@ -181,8 +181,8 @@ Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICE
 ## 🆘 Suporte
 
 - **Documentação**: [docs/](docs/)
-- **Issues**: [GitHub Issues](https://github.com/rarinside/webscrapyfavor/issues)
-- **Instalação**: [Página de Instalação](https://rarinside.github.io/webscrapyfavor/bookmarklet.html)
+- **Issues**: [GitHub Issues](https://github.com/rarinside/webscrapy/issues)
+- **Instalação**: [Página de Instalação](https://rarinside.github.io/webscrapy/bookmarklet.html)
 
 ## 🎉 Agradecimentos
 
@@ -192,4 +192,4 @@ Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICE
 
 ---
 
-**🚀 [Instalar Agora](https://rarinside.github.io/webscrapyfavor/bookmarklet.html)** | **📖 [Documentação](docs/)** | **🐛 [Reportar Bug](https://github.com/rarinside/webscrapyfavor/issues)**
+**🚀 [Instalar Agora](https://rarinside.github.io/webscrapy/bookmarklet.html)** | **📖 [Documentação](docs/)** | **🐛 [Reportar Bug](https://github.com/rarinside/webscrapy/issues)**
